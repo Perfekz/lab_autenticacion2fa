@@ -6,6 +6,14 @@ require '../config/db.php';
 require '../classes/HashService.php';
 require '../classes/Sanitizador.php';
 
+function volverConError($mensaje)
+{
+    $_SESSION['error'] = $mensaje;
+
+    header("Location: ../views/login.php");
+    exit;
+}
+
 $email = Sanitizador::email($_POST['email']);
 
 $password =
@@ -43,4 +51,4 @@ if(
     exit;
 }
 
-echo "Login incorrecto";
+volverConError("Login incorrecto");

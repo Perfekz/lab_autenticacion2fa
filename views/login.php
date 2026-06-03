@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+$error = $_SESSION['error'] ?? null;
+
+unset($_SESSION['error']);
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,9 +38,19 @@
             required
         >
 
+        <?php if($error): ?>
+            <div class="error">
+                <?= htmlspecialchars($error) ?>
+            </div>
+        <?php endif; ?>
+
         <button type="submit">
             Ingresar
         </button>
+
+        <a
+            href="register.php"
+            class="link">¿No tienes cuenta? Regístrate aquí</a>
 
     </form>
 

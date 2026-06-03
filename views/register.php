@@ -2,6 +2,9 @@
 
 require '../security/csrf.php';
 
+$error = $_SESSION['error'] ?? null;
+
+unset($_SESSION['error']);
 ?>
 
 <!DOCTYPE html>
@@ -67,9 +70,19 @@ require '../security/csrf.php';
             value="<?= generarToken() ?>"
         >
 
+        <?php if($error): ?>
+            <div class="error">
+                <?= htmlspecialchars($error) ?>
+            </div>
+        <?php endif; ?>
+
         <button type="submit">
             Registrar
         </button>
+
+        <a
+            href="login.php"
+            class="link">¿Ya tienes una cuenta? Inicia sesión aquí</a>
 
     </form>
 

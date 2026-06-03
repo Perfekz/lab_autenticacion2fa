@@ -9,8 +9,18 @@ require '../vendor/autoload.php';
 
 use Sonata\GoogleAuthenticator\GoogleAuthenticator;
 
+session_start();
+
+function volverConError($mensaje)
+{
+    $_SESSION['error'] = $mensaje;
+
+    header("Location: ../views/register.php");
+    exit;
+}
+
 if(!validarToken($_POST['csrf'])) {
-    die("Token CSRF inválido");
+    volverConError("Token CSRF inválido");
 }
 
 $nombre = Sanitizador::texto($_POST['nombre']);
@@ -22,19 +32,17 @@ $email = Sanitizador::email($_POST['email']);
 $sexo = $_POST['sexo'];
 
 if(!in_array($sexo,['M','F'])){
-    die("Sexo inválido");
+    volverConError("Sexo inválido");
 }
 
 if($_POST['password'] !== $_POST['confirm']){
-    die(
-        "Las contraseñas no coinciden"
-    );
+    volverConError("Las contraseñas no coinciden"); 
 }
 
 $registro = new RegistroUsuario();
 
 if($registro->existeCorreo($conn,$email)){
-    die("Correo ya registrado");
+    volverConError("Correo ya registrado");
 }
 
 $hashService = new HashService();
